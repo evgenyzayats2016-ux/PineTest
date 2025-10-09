@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PineTrader - Алгоритмическая торговля</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --color-brand-bg: #f0f2f5;
+        --color-brand-surface: #ffffff;
+        --color-brand-surface-light: #e4e6eb;
+        --color-brand-text: #1a1a1a;
+        --color-brand-text-secondary: #606060;
+        --color-brand-accent: #007bff;
+        --color-brand-accent-dark: #0056b3;
+        --color-brand-success: #28a745;
+        --color-brand-danger: #dc3545;
+        --color-brand-bg-contrast: #ffffff;
+      }
+      .dark {
+        --color-brand-bg: #10111a;
+        --color-brand-surface: #1c1d2b;
+        --color-brand-surface-light: #2a2c3d;
+        --color-brand-text: #f0f0f0;
+        --color-brand-text-secondary: #a0a0b0;
+        --color-brand-accent: #00e5ff;
+        --color-brand-accent-dark: #00b8cc;
+        --color-brand-success: #00c853;
+        --color-brand-danger: #ff3d00;
+        --color-brand-bg-contrast: #10111a;
+      }
+      body {
+        background-color: var(--color-brand-bg);
+        color: var(--color-brand-text);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+    </style>
+    <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'brand-bg': 'var(--color-brand-bg)',
+            'brand-surface': 'var(--color-brand-surface)',
+            'brand-surface-light': 'var(--color-brand-surface-light)',
+            'brand-text': 'var(--color-brand-text)',
+            'brand-text-secondary': 'var(--color-brand-text-secondary)',
+            'brand-accent': 'var(--color-brand-accent)',
+            'brand-accent-dark': 'var(--color-brand-accent-dark)',
+            'brand-success': 'var(--color-brand-success)',
+            'brand-danger': 'var(--color-brand-danger)',
+            'brand-bg-contrast': 'var(--color-brand-bg-contrast)',
+          }
+        }
+      }
+    }
+    </script>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.2.1",
+    "papaparse": "https://aistudiocdn.com/papaparse@^5.4.1",
+    "firebase/": "https://aistudiocdn.com/firebase@^10.12.3/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>
