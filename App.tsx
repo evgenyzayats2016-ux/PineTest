@@ -7,7 +7,6 @@ import Backtesting from './components/Backtesting';
 import Settings from './components/Settings';
 import DataManager from './components/DataManager';
 import Charts from './components/Charts';
-import Auth from './components/Auth';
 import Spinner from './components/shared/Spinner';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 
@@ -27,7 +26,7 @@ const AppContent: React.FC = () => {
         localStorage.setItem('theme', theme);
     }, [theme]);
 
-    if (loading) {
+    if (loading || !user) {
         return (
             <div className="min-h-screen flex justify-center items-center">
                 <Spinner />
@@ -35,10 +34,6 @@ const AppContent: React.FC = () => {
         );
     }
 
-    if (!user) {
-        return <Auth />;
-    }
-    
     const handleNavigateToEditor = (id: string | null = null) => {
         setEditingStrategyId(id);
         setCurrentView('STRATEGY_EDITOR');

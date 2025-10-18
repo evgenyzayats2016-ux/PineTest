@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import type { UserProfile } from '../types';
-import {
-    onAuthStateChanged,
-    signInWithPopup,
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut as firebaseSignOut,
-    User
-} from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { MOCKED_USER_ID } from '../constants';
+
+// The mock user profile
+const mockUser: UserProfile = {
+    uid: MOCKED_USER_ID,
+    email: 'mock.user@pinetrader.dev',
+    displayName: 'Mock Trader',
+    photoURL: `https://api.dicebear.com/7.x/initials/svg?seed=MockTrader`,
+    createdAt: new Date('2023-01-01T00:00:00Z').toISOString(),
+};
 
 interface AuthContextType {
     user: UserProfile | null;
@@ -26,50 +26,23 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({ children }) => {
     const [user, setUser] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const formatUser = (rawUser: User): UserProfile => {
-        return {
-            uid: rawUser.uid,
-            email: rawUser.email,
-            displayName: rawUser.displayName,
-            photoURL: rawUser.photoURL,
-            // Use creationTime from user metadata for a persistent creation date
-            createdAt: rawUser.metadata.creationTime || new Date().toISOString(),
-        };
-    };
-
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            if (authUser) {
-                setUser(formatUser(authUser));
-            } else {
-                setUser(null);
-            }
+        // "log in" the mock user after a short delay to simulate loading
+        const timer = setTimeout(() => {
+            setUser(mockUser);
             setLoading(false);
-        });
+        }, 300);
 
-        // Cleanup subscription on unmount
-        return () => unsubscribe();
+        return () => clearTimeout(timer);
     }, []);
-
-    const signInWithGoogle = async () => {
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
-        // onAuthStateChanged will handle setting the user state
-    };
-
-    const signUpWithEmail = async (email: string, password: string) => {
-        await createUserWithEmailAndPassword(auth, email, password);
-        // onAuthStateChanged will handle setting the user state
-    };
-
-    const signInWithEmail = async (email: string, password: string) => {
-        await signInWithEmailAndPassword(auth, email, password);
-        // onAuthStateChanged will handle setting the user state
-    };
-
+    
+    // Dummy functions for the interface
+    const signInWithGoogle = async () => console.log("signInWithGoogle called (mocked)");
+    const signUpWithEmail = async (email: string, password: string) => console.log("signUpWithEmail called (mocked)");
+    const signInWithEmail = async (email: string, password: string) => console.log("signInWithEmail called (mocked)");
     const signOut = async () => {
-        await firebaseSignOut(auth);
-        setUser(null);
+        console.log("signOut called (mocked)");
+        // The sign out button in the header will now just log to console.
     };
 
     const value = {

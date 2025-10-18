@@ -11,7 +11,9 @@ import {
   Query,
   DocumentReference,
   getDoc,
-  getDocs
+  getDocs,
+  QuerySnapshot,
+  FirestoreError,
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
@@ -23,7 +25,9 @@ type QueryConstraint = {
 }
 
 // FIX: Accept a readonly tuple for the query parameter to align with `as const` usage.
-export const useFirestore = <T>(pathOrQuery: string | readonly [string, QueryConstraint]) => {
+// FIX: Error on line 41: Spread types may only be created from object types.
+// This is fixed by constraining T to DocumentData, ensuring T is always an object.
+export const useFirestore = <T extends DocumentData>(pathOrQuery: string | readonly [string, QueryConstraint]) => {
   const [data, setData] = useState<T[] | T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -43,9 +47,11 @@ export const useFirestore = <T>(pathOrQuery: string | readonly [string, QueryCon
                     setData(null);
                 }
                 setLoading(false);
-            }, (err) => {
+            }, (err: FirestoreError) => {
                 console.error(err);
-                setError(err);
+                // FIX: Error on line 48: Argument of type 'FirestoreError' is not assignable to parameter of type 'SetStateAction<Error>'.
+                // Create a new Error object from the FirestoreError to match the state's type.
+                setError(new Error(err.message));
                 setLoading(false);
             });
         } else {
@@ -68,16 +74,20 @@ export const useFirestore = <T>(pathOrQuery: string | readonly [string, QueryCon
              if (constraints?.orderBy) q = query(q, orderBy(...constraints.orderBy));
              if (constraints?.limit) q = query(q, limit(constraints.limit));
 
-             unsubscribe = onSnapshot(q, (querySnapshot) => {
+             // FIX: Error on line 73: Property 'forEach' does not exist on type 'DocumentSnapshot<unknown, DocumentData>'.
+             // Explicitly type `querySnapshot` to fix incorrect type inference by TypeScript.
+             unsubscribe = onSnapshot(q, (querySnapshot: QuerySnapshot<DocumentData>) => {
                 const results: T[] = [];
                 querySnapshot.forEach((doc) => {
                     results.push({ ...doc.data(), strategyId: doc.id, tradeId: doc.id } as T);
                 });
                 setData(results);
                 setLoading(false);
-            }, (err) => {
+            }, (err: FirestoreError) => {
                 console.error(err);
-                setError(err);
+                // FIX: Error on line 80: Argument of type 'FirestoreError' is not assignable to parameter of type 'SetStateAction<Error>'.
+                // Create a new Error object from the FirestoreError to match the state's type.
+                setError(new Error(err.message));
                 setLoading(false);
             });
         }
