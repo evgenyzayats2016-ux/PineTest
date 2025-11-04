@@ -1,5 +1,5 @@
 
-import type { Strategy, BacktestResult, Trade, UserSecret, UserProfile } from '../types';
+import type { Strategy, BacktestResult, Trade, UserSecret, UserProfile, OhlcvBar } from '../types';
 import { MOCKED_USER_ID, NG_FUTURES_FIGI } from '../constants';
 
 const STRATEGIES_KEY = 'pine_trader_mock_strategies';
@@ -251,4 +251,39 @@ export const deleteUserSecret = async (): Promise<void> => {
     console.log("Deleting mock user secret...");
     await delay(300);
     localStorage.removeItem(USER_SECRET_KEY);
+};
+
+// --- Mock Tinkoff Services ---
+
+/**
+ * Simulates fetching historical candle data from Tinkoff API.
+ * In a real app, this would make an actual HTTP request.
+ */
+export const fetchTinkoffCandles = async (figi: string, token: string): Promise<OhlcvBar[]> => {
+    console.log(`Simulating fetch for FIGI: ${figi} with token.`);
+    await delay(800);
+
+    if (!token) {
+        throw new Error("API токен не предоставлен. Пожалуйста, добавьте токен в настройках.");
+    }
+    
+    // Generate some random realistic-looking data
+    const candles: OhlcvBar[] = [];
+    let lastClose = Math.random() * 500 + 200; // Start price between 200 and 700
+    const now = Date.now();
+
+    for (let i = 20; i > 0; i--) {
+        const timestamp = now - i * 60 * 60 * 1000; // Hourly candles for the last 20 hours
+        const open = lastClose;
+        const change = (Math.random() - 0.48) * open * 0.05; // Up to 5% change per hour
+        const close = open + change;
+        const high = Math.max(open, close) + Math.random() * open * 0.01;
+        const low = Math.min(open, close) - Math.random() * open * 0.01;
+        const volume = Math.floor(Math.random() * 100000) + 5000;
+        
+        candles.push({ timestamp, open, high, low, close, volume });
+        lastClose = close;
+    }
+
+    return candles.reverse(); // Newest first
 };

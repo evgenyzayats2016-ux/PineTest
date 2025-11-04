@@ -91,12 +91,13 @@ const Header: React.FC<HeaderProps> = ({ currentView, setCurrentView, theme, set
                     </div>
                     <div className="flex items-center space-x-4">
                         {user && (
-                            <nav className="hidden sm:flex items-center space-x-2 sm:space-x-4">
+                            <nav className="hidden sm:flex items-center space-x-1 sm:space-x-2">
                                 <NavItem title="Панель" view="DASHBOARD" currentView={currentView} onClick={() => setCurrentView('DASHBOARD')} />
                                 <NavItem title="Редактор" view="STRATEGY_EDITOR" currentView={currentView} onClick={() => setCurrentView('STRATEGY_EDITOR')} />
                                 <NavItem title="Бектест" view="BACKTESTING" currentView={currentView} onClick={() => setCurrentView('BACKTESTING')} />
                                 <NavItem title="Графики" view="CHARTS" currentView={currentView} onClick={() => setCurrentView('CHARTS')} />
                                 <NavItem title="Данные" view="DATA_MANAGER" currentView={currentView} onClick={() => setCurrentView('DATA_MANAGER')} />
+                                <NavItem title="Сервисы Т" view="TINKOFF_SERVICES" currentView={currentView} onClick={() => setCurrentView('TINKOFF_SERVICES')} />
                                 <NavItem title="Настройки" view="SETTINGS" currentView={currentView} onClick={() => setCurrentView('SETTINGS')} />
                             </nav>
                         )}

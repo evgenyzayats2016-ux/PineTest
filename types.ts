@@ -147,7 +147,7 @@ export interface Position {
 }
 
 
-export type AppView = 'DASHBOARD' | 'STRATEGY_EDITOR' | 'BACKTESTING' | 'SETTINGS' | 'DATA_MANAGER' | 'CHARTS';
+export type AppView = 'DASHBOARD' | 'STRATEGY_EDITOR' | 'BACKTESTING' | 'SETTINGS' | 'DATA_MANAGER' | 'CHARTS' | 'TINKOFF_SERVICES';
 
 export interface OhlcvBar {
   timestamp: number; // Unix timestamp (milliseconds)

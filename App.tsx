@@ -7,6 +7,7 @@ import Backtesting from './components/Backtesting';
 import Settings from './components/Settings';
 import DataManager from './components/DataManager';
 import Charts from './components/Charts';
+import TinkoffServices from './components/TinkoffServices';
 import Spinner from './components/shared/Spinner';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 
@@ -58,6 +59,8 @@ const AppContent: React.FC = () => {
                 return <Settings />;
             case 'DATA_MANAGER':
                 return <DataManager />;
+            case 'TINKOFF_SERVICES':
+                return <TinkoffServices />;
             default:
                 return <Dashboard onEditStrategy={handleNavigateToEditor} />;
         }

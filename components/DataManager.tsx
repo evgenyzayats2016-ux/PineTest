@@ -377,8 +377,8 @@ const DataImporter: React.FC<DataImporterProps> = ({ onImportSuccess }) => {
                     } else if (typeof err === 'string') {
                         message = err;
                     } else if (err && typeof err === 'object' && 'message' in err) {
-                        // FIX: Argument of type 'unknown' is not assignable to parameter of type 'string'. Simplified the expression to ensure the unknown message property is correctly converted to a string.
-                        message = String((err as any).message);
+                        // FIX: Argument of type 'unknown' is not assignable to parameter of type 'string'. Type guard `in` operator correctly narrows type, so `err.message` can be safely converted to a string.
+                        message = String(err.message);
                     }
                     setError(`Критическая ошибка парсинга: ${message}. Проверьте сопоставление колонок и формат данных.`);
                     setStep('CONFIGURE'); // Revert to config on critical error
